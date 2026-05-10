@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { MessageService } from '../../../services/message.service';
+import { ResponseHandler } from '../../../utils/ResponseHandler';
 
 export class MessageController {
   static async sendMessage(req: Request, res: Response, next: NextFunction) {
@@ -8,10 +9,7 @@ export class MessageController {
       const senderId = (req as any).user._id;
 
       const message = await MessageService.sendMessage(senderId, recipientId, text);
-      res.status(201).json({
-        status: 'success',
-        data: { message },
-      });
+      ResponseHandler.success(res, { message }, 201);
     } catch (error) {
       next(error);
     }
@@ -21,10 +19,7 @@ export class MessageController {
     try {
       const { conversationId } = req.params;
       const messages = await MessageService.getMessagesByConversation(conversationId);
-      res.status(200).json({
-        status: 'success',
-        data: { messages },
-      });
+      ResponseHandler.success(res, { messages });
     } catch (error) {
       next(error);
     }
@@ -34,10 +29,7 @@ export class MessageController {
     try {
       const userId = (req as any).user._id;
       const conversations = await MessageService.getUserConversations(userId);
-      res.status(200).json({
-        status: 'success',
-        data: { conversations },
-      });
+      ResponseHandler.success(res, { conversations });
     } catch (error) {
       next(error);
     }

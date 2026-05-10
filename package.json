@@ -1,0 +1,16 @@
+{
+  "name": "chat-microservices-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install --prefix auth-service && npm install --prefix message-service",
+    "dev:auth": "npm run dev --prefix auth-service",
+    "dev:msg": "npm run dev --prefix message-service",
+    "dev": "concurrently \"npm run dev:auth\" \"npm run dev:msg\"",
+    "docker:up": "docker-compose up --build",
+    "docker:down": "docker-compose down"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
