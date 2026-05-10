@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "install:all": "npm install --prefix auth-service && npm install --prefix message-service",
+    "install:all": "npm install --prefix auth-service && npm install --prefix message-service && npm install --prefix api-gateway",
     "dev:auth": "npm run dev --prefix auth-service",
     "dev:msg": "npm run dev --prefix message-service",
-    "dev": "concurrently \"npm run dev:auth\" \"npm run dev:msg\"",
+    "dev:gateway": "npm run dev --prefix api-gateway",
+    "dev": "concurrently \"npm run dev:auth\" \"npm run dev:msg\" \"npm run dev:gateway\"",
     "docker:up": "docker-compose up --build",
     "docker:down": "docker-compose down",
     "test:all": "npm test --prefix auth-service && npm test --prefix message-service"
