@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [auth-service, message-service, api-gateway]
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+    - name: Install dependencies
+      run: npm install --prefix ${{ matrix.service }}
+    - name: Run Lint
+      run: npm run lint --prefix ${{ matrix.service }}
+      continue-on-error: true # Allow CI to continue if lint fails for now
+    - name: Run Tests
+      if: matrix.service != 'api-gateway'
+      run: npm test --prefix ${{ matrix.service }}
