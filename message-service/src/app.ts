@@ -8,17 +8,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
-// Mounting at /api/v1/messages will give:
-// POST /api/v1/messages/send
-// GET /api/v1/messages/:conversationId
-app.use('/api/v1/messages', messageRoutes);
+// Health Check
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'UP', timestamp: new Date().toISOString() });
+});
 
-// Mounting at /api/v1/conversations to satisfy GET /api/v1/conversations
-app.use('/api/v1/conversations', messageRoutes); 
-// Note: In messageRoutes, router.get('/') handles conversations. 
-// So GET /api/v1/conversations/ will hit it. 
-// If we want GET /api/v1/conversations specifically, we mount it at /api/v1/conversations and use router.get('/')
+// Routes
+app.use('/api/v1/messages', messageRoutes);
+app.use('/api/v1/conversations', messageRoutes);
 
 // Error handling
 app.use(errorHandler);
