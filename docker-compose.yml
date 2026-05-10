@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  auth-db:
+    image: mongo:latest
+    ports:
+      - "27018:27017"
+    volumes:
+      - auth-data:/data/db
+
+  message-db:
+    image: mongo:latest
+    ports:
+      - "27019:27017"
+    volumes:
+      - message-data:/data/db
+
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "5001:5001"
+    environment:
+      - PORT=5001
+      - MONGODB_URI=mongodb://auth-db:27017/auth_db
+      - JWT_SECRET=super_secret_jwt_key
+      - JWT_EXPIRES_IN=1d
+    depends_on:
+      - auth-db
+
+  message-service:
+    build: ./message-service
+    ports:
+      - "5002:5002"
+    environment:
+      - PORT=5002
+      - MONGODB_URI=mongodb://message-db:27017/message_db
+      - AUTH_SERVICE_URL=http://auth-service:5001/api/v1/auth
+    depends_on:
+      - message-db
+      - auth-service
+
+volumes:
+  auth-data:
+  message-data:
