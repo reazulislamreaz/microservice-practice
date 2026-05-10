@@ -1,18 +1,22 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger';
 import messageRoutes from './api/v1/routes/message.routes';
 import { errorHandler } from './middleware/errorHandler';
+import { correlationIdMiddleware } from './middleware/correlation.middleware';
 
 const app = express();
 
-// Security Middleware
+// Security & Performance Middleware
 app.use(helmet());
+app.use(compression());
 app.use(cors());
 app.use(express.json());
+app.use(correlationIdMiddleware);
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
