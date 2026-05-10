@@ -8,7 +8,8 @@
     "dev:msg": "npm run dev --prefix message-service",
     "dev": "concurrently \"npm run dev:auth\" \"npm run dev:msg\"",
     "docker:up": "docker-compose up --build",
-    "docker:down": "docker-compose down"
+    "docker:down": "docker-compose down",
+    "test:all": "npm test --prefix auth-service && npm test --prefix message-service"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

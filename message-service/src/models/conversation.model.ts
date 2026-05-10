@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const conversationSchema = new mongoose.Schema(
   {
-    participants: [{ type: mongoose.Schema.Types.ObjectId, required: true }],
+    participants: [{ type: mongoose.Schema.Types.ObjectId, required: true, index: true }],
   },
   { timestamps: true }
 );
