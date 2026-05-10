@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { MessageController } from '../controllers/message.controller';
 import { protect } from '../../../middleware/auth.middleware';
 import { validate } from '../../../middleware/validate';
-import { sendMessageSchema } from '../validations/message.validation';
+import { sendMessageSchema, getMessagesSchema } from '../validations/message.validation';
 
 const router = Router();
 
@@ -49,7 +49,7 @@ router.post('/send', validate(sendMessageSchema), MessageController.sendMessage)
  *       200:
  *         description: Success
  */
-router.get('/:conversationId', MessageController.getMessages);
+router.get('/:conversationId', validate(getMessagesSchema), MessageController.getMessages);
 
 /**
  * @openapi
